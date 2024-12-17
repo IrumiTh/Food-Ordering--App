@@ -5,6 +5,7 @@ import Home from '../components/Home/Home'
 import RestaurantDetails from '../components/Restaurant/RestaurantDetails'
 import { Card } from '@mui/material'
 import Profile from '../components/Profile/Profile'
+import Auth from '../components/Auth/Auth'
 
 const CustomerRouter = () => {
   return (
@@ -17,6 +18,7 @@ const CustomerRouter = () => {
             <Route path='/cart' element={<Card/>} />
             <Route path='/my-profile/*' element={<Profile/>} />
         </Routes>
+        <Auth/>
       
     </div>
   )
