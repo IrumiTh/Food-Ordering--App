@@ -9,7 +9,7 @@ export const registerUser=(reqData)=>async(dispatch)=>{
         const {data}=await axios.post(`${API_URL}/auth/signup`,reqData.userData)
         if(data.jwt)localStorage.setItem("jwt",data.jwt);
         if(data.role==="ROLE_RESTAURANT_OWNER"){
-            reqData.navigate("/admin/restaurant")
+            reqData.navigate("/admin/restaurants")
         }
         else{
             reqData.navigate("/")
@@ -70,7 +70,7 @@ export const addToFavorite=({jwt,restaurantId})=>async(dispatch)=>{
     
     dispatch({type:ADD_TO_FAVORITE_REQUEST})
     try {
-        const {data}=await api.put(`/api/restaurants/${restaurantId}/add-favorite`,{},{
+        const {data}=await api.put(`/api/restaurants/${restaurantId}/add-favorites`,{},{
             headers:{
                 Authorization: `Bearer ${jwt}`
             }

@@ -17,6 +17,7 @@ const CustomerRouter = () => {
             <Route path='/restaurant/:city/:title/:id' element={<RestaurantDetails/>} />
             <Route path='/cart' element={<Card/>} />
             <Route path='/my-profile/*' element={<Profile/>} />
+            <Route path='/admin/restaurant' element={<Home/>} />
         </Routes>
         <Auth/>
       
