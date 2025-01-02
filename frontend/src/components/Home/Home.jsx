@@ -13,12 +13,15 @@ const Home = () => {
   const jwt = localStorage.getItem("jwt")
   const {restaurant} = useSelector(store=>store)
 
+
   console.log("restaurants", restaurant)
 
   useEffect(()=>{
     dispatch(getAllRestaurantsAction(jwt))
 
   },[])
+
+  
 
   return (
     <div className='pb-10'>

@@ -1,8 +1,11 @@
 import { Divider, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import MenuCard from './MenuCard';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRestaurantsById } from '../State/Restaurant/Action';
 
 const categories=[
     "pizza",
@@ -24,9 +27,22 @@ const menu=[1,1,1,1]
 
 const RestaurantDetails = () => {
     const [foodType,setFoodType]=useState("all");
+    const navigate = useNavigate()
+    const dispatch=useDispatch();
+    const jwt = localStorage.getItem("jwt")
+    const {auth,restaurant} = useSelector(store=>store);
+
+    const {id,city} = useParams();
+
     const handleFilter=(e)=>{
         console.log(e.target.value,e.target.name)
     }
+
+    console.log("restaurant",restaurant)
+
+    useEffect(()=>{
+        dispatch(getRestaurantsById({jwt,restaurantId:id}))
+    },[])
   return (
     <div className='px-5 lg:px-20'>
 
@@ -35,10 +51,10 @@ const RestaurantDetails = () => {
             <div>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <img className='w-full h-[40vh] object-cover' src='https://cdn.pixabay.com/photo/2020/09/17/12/41/cafe-5579069_1280.jpg' alt=''/>
+                        <img className='w-full h-[40vh] object-cover' src={restaurant.restaurant?.images[0]} alt=''/>
                     </Grid>
                     <Grid item xs={12} lg={6}>
-                        <img className='w-full h-[40vh] object-cover' src='https://media.istockphoto.com/id/1365312463/photo/modern-cafe-restaurant-interior-with-yellow-chair-against-window-with-city-view.jpg?s=2048x2048&w=is&k=20&c=tyFPYgSaYJ8koiPztLC1T3EucPPwTF5YXCOn-7GP_TA=' alt=''/>
+                        <img className='w-full h-[40vh] object-cover' src={restaurant.restaurant?.images[1]} alt=''/>
                     </Grid>
                     <Grid item xs={12} lg={6}>
                         <img className='w-full h-[40vh] object-cover' src='https://media.istockphoto.com/id/1357951534/photo/3d-render-of-tea-and-cafe-shop.jpg?s=2048x2048&w=is&k=20&c=oo8Cwu3yqelvDs3Vs1nqDMr5h6zssksA3NgUvhsWWHg=' alt=''/>
@@ -47,11 +63,11 @@ const RestaurantDetails = () => {
             </div>
             <div className='pt-3 pb-5'>
                 <h1 className='text-4xl font-semibold'>
-                    Theesh Foods
+                    {restaurant.restaurant?.name}
                 </h1>
                 <p className='text-gray-500 mt-1'>
 
-                    <span>Theesh Food Restaurant offers a delightful dining experience with a focus on fresh, high-quality ingredients and a diverse menu catering to all tastes. Whether you're craving traditional favorites or modern culinary creations, we combine authentic flavors with exceptional service to create memorable meals for every occasion.</span>
+                    <span>{restaurant.restaurant?.description}</span>
                 </p>
                 <div className='space-y-3 mt-3'>
                     <p className='text-gray-500 flex items-center gap-3'>
