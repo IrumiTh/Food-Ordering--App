@@ -5,16 +5,8 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import MenuCard from './MenuCard';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRestaurantsById } from '../State/Restaurant/Action';
+import { getRestaurantsById, getRestaurantsCategory } from '../State/Restaurant/Action';
 
-const categories=[
-    "pizza",
-    "biryani",
-    "burger",
-    "chicken",
-    "rice"
-
-]
 
 const foodTypes=[
     {label:"All",value:"all"},
@@ -42,6 +34,7 @@ const RestaurantDetails = () => {
 
     useEffect(()=>{
         dispatch(getRestaurantsById({jwt,restaurantId:id}))
+        dispatch(getRestaurantsCategory({jwt,restaurantId:id}))
     },[])
   return (
     <div className='px-5 lg:px-20'>
@@ -112,8 +105,8 @@ const RestaurantDetails = () => {
 
                         <FormControl className='py-10 space-y-5' component={"fieldset"}>
                             <RadioGroup onChange={handleFilter} name="food_type" value={foodType}>
-                                {categories.map((item)=>(
-                                <FormControlLabel key={item} value={item} control={<Radio />} label={item} />
+                                {restaurant.categories.map((item)=>(
+                                <FormControlLabel key={item} value={item} control={<Radio />} label={item.name} />
                                 ))}
 
                             </RadioGroup>
