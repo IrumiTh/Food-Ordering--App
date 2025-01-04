@@ -39,7 +39,7 @@ export const getMenuItemsByRestaurantId = (reqData) => {
             console.log("menu item by restaurants  ", data);
             dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS,payload:data});
         } catch (error) {
-            console.log("error",error);
+            console.log("catch error",error);
             dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_FAILURE,payload:error})
 
         }

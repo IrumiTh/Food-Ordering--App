@@ -35,7 +35,7 @@ export const getRestaurantsById = (reqData) => {
             console.log(" all restaurant ", response.data);
         } catch (error) {
             dispatch({type:GET_RESTAURANT_BY_ID_FAILURE,payload:error});
-            console.log(" catch error ",error);
+            console.log(" catch error get restaurant ",error);
         }
     }
 }
