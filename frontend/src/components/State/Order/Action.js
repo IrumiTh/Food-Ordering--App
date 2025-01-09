@@ -17,6 +17,7 @@ export const createOrder = (reqData) => {
             console.log("create order data", data);
             dispatch({type:CREATE_ORDER_SUCCESS,payload:data})
         } catch (error) {
+            console.log("error",error);
             dispatch({type:CREATE_ORDER_FAILURE,payload:error})
         }
     };

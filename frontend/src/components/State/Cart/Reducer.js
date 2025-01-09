@@ -31,7 +31,7 @@ const cartReducer = (state=initialState,action) => {
             return{
                 ...state,
                 loading:false,
-                cartItem: [action.payload, ...state.cartItems]
+                cartItems: [action.payload, ...state.cartItems]
             };
 
         case actionTypes.UPDATE_CARTITEM_SUCCESS:

@@ -1,7 +1,10 @@
 import { Accordion, AccordionDetails, AccordionSummary, Button, Checkbox, FormControlLabel, FormGroup } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { categorizeingredients } from '../util/categorizeingredients';
+import { createMenuItem } from '../State/Menu/Action';
+import { useDispatch } from 'react-redux';
+import { addItemToCart } from '../State/Cart/Action';
 
 // const ingredients=[
 //     {
@@ -30,10 +33,32 @@ const demo=[
 ]
 
 const MenuCard = ({item}) => {
-  const handleCheckBoxChange=(value)=>{
-    console.log("value")
 
+  const [selectedIngredients,setSelectedIngredients]=useState([]);
+  const dispatch = useDispatch();
+
+
+  const handleCheckBoxChange=(itemName)=>{
+    console.log("value",itemName)
+    if(selectedIngredients.includes(itemName)){
+      setSelectedIngredients(selectedIngredients.filter((item)=>item!==itemName))
+    }else{
+      setSelectedIngredients([...selectedIngredients,itemName])
+    }
   }
+
+  const handleAddItemTocart = (e)=>{
+    e.preventDefault()
+    const reqData={token:localStorage.getItem("jwt"),
+    cartItem:{
+      foodId:item.id,
+      quantity:1,
+      ingredients:selectedIngredients,
+    }};
+    dispatch(addItemToCart(reqData))
+    console.log("req data",reqData)
+  };
+
   return (
     <Accordion>
         <AccordionSummary
@@ -59,7 +84,7 @@ const MenuCard = ({item}) => {
           </div>
         </AccordionSummary>
         <AccordionDetails>
-          <form>
+          <form onSubmit={handleAddItemTocart}>
             <div className="flex gap-5 flex-wrap">
               {
                 Object.keys(categorizeingredients(item.ingredients)).map((category)=>
@@ -68,7 +93,7 @@ const MenuCard = ({item}) => {
                     <p>{category}</p>
                     <FormGroup>
                       {categorizeingredients(item.ingredients)[category].map((item)=>
-                      <FormControlLabel key={item.name} control={<Checkbox onChange={()=>handleCheckBoxChange(item)} />} label={item.name} />
+                      <FormControlLabel key={item.id} control={<Checkbox onChange={()=>handleCheckBoxChange(item.name)} />} label={item.name} />
                       )}
                       
                     </FormGroup>
@@ -80,7 +105,7 @@ const MenuCard = ({item}) => {
             </div>
 
             <div className='pt-5'>
-              <Button variant='contained' disabled={false} type='submit'>{true?"Add to Cart":"Out of stock"}</Button>
+              <Button  variant='contained' disabled={false} type='submit'>{true?"Add to Cart":"Out of stock"}</Button>
             </div>
           </form>
         </AccordionDetails>

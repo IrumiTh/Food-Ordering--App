@@ -5,6 +5,9 @@ import AddressCard from './AddressCard'
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import { lightGreen } from '@mui/material/colors';
 import {ErrorMessage, Field, Form, Formik} from "formik";
+import { useSearchParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { createOrder } from '../State/Order/Action';
 // import * as Yup from "yup"
 
 export const style = {
@@ -34,7 +37,7 @@ export const style = {
 
 //   })
 
-const items=[1,1]
+
 
 const Cart = () => {
     const createOrderUsingSelectedAddress=()=>{
@@ -42,16 +45,36 @@ const Cart = () => {
     }
    
     const [open, setOpen] = React.useState(false);
+    const {cart,auth} = useSelector(store=>store);
+    const dispatch = useDispatch();
+
+
     const handleOpenAddressModal = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleSubmit=(values) => {
+        const data = {
+            jwt:localStorage.getItem("jwt"),
+            order:{
+                restaurantId:cart.cart?.item[0].food?.restaurant.id,
+                deliveryAddress:{
+                    fullName:auth.user?.fullName,
+                    streetAddress:values.streetAddress,
+                    city:values.city,
+                    state:values.state,
+                    postalCode:values.pincode,
+                    country:"sri lanka"
+
+                }
+            }
+        }
+        dispatch(createOrder(data))
         console.log("form value ",values)
     }
   return (
     <>
         <main className='lg:flex justify-between'>
             <section className='lg:w-[30%] space-y-6 lg:min-h-screen pt-10'>
-                {items.map(()=><CartItem/>)}
+                {cart.cart?.item.map((item)=><CartItem item={item}/>)}
 
                 <Divider/>
                 <div className='billDetails px-5 text-sm'>
@@ -61,7 +84,7 @@ const Cart = () => {
                     <div className='space-y-3'>
                         <div className='flex justify-between text-gray-400'>
                             <p>Item Total</p>
-                            <p>LKR 500</p>
+                            <p>LKR {cart.cart?.total}</p>
                         </div>
 
                     </div>
@@ -85,7 +108,7 @@ const Cart = () => {
                         <p>
                             Total Pay
                         </p>
-                        <p>LKR 33000</p>
+                        <p>LKR {cart.cart?.total+200+500}</p>
                     </div>
                 </div>
             </section>

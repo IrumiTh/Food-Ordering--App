@@ -12,13 +12,15 @@ import Auth from './components/Auth/Auth';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from './components/State/Authentication/Action';
+import { findCart } from './components/State/Cart/Action';
 
 function App() {
   const dispatch = useDispatch()
   const jwt   = localStorage.getItem("jwt")
   const {auth} = useSelector(store=>store)
   useEffect(()=>{
-    dispatch(getUser(auth.jwt || jwt))
+    dispatch(getUser(auth.jwt || jwt));
+    dispatch(findCart(jwt))
   },[auth.jwt]);
 
   

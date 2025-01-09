@@ -6,6 +6,7 @@ import RestaurantDetails from '../components/Restaurant/RestaurantDetails'
 import { Card } from '@mui/material'
 import Profile from '../components/Profile/Profile'
 import Auth from '../components/Auth/Auth'
+import Cart from '../components/Cart/Cart'
 
 const CustomerRouter = () => {
   return (
@@ -15,7 +16,7 @@ const CustomerRouter = () => {
             <Route path='/' element={<Home/>} />
             <Route path='/account/:register' element={<Home/>} />
             <Route path='/restaurant/:city/:title/:id' element={<RestaurantDetails/>} />
-            <Route path='/cart' element={<Card/>} />
+            <Route path='/cart' element={<Cart/>} />
             <Route path='/my-profile/*' element={<Profile/>} />
             <Route path='/admin/restaurant' element={<Home/>} />
         </Routes>
